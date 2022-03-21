@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "outDir": "dist",
+    "rootDir": "src/",
+    "baseUrl": "src/",
+    "paths": {
+      "$infrastructures/*": ["./infrastructures/*"],
+      "$services/*": ["./services/*"],
+      "$scripts/*": ["./scripts/*"],
+      "$utils/*": ["./utils/*"]
+    },
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/**/*"]
+}

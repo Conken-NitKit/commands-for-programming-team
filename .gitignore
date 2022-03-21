@@ -1,0 +1,4 @@
+node_modules/
+src/services/team-contribution/blackList.ts
+.env
+package-lock.json

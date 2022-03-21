@@ -1,0 +1,72 @@
+{
+  "name": "commands-for-programming-team",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/start.ts",
+  "scripts": {
+    "ts-node": "ts-node",
+    "start": "npm run ts-node src/start.ts",
+    "lint": "eslint --ext .js,.ts './'",
+    "lint:fix": "npm run lint --fix",
+    "format": "prettier --check \"**/*.{js,ts}\"",
+    "format:fix": "prettier --write \"**/*.{js,ts}\"",
+    "lint-staged": "lint-staged",
+    "check-types": "tsc --noEmit",
+    "prepare": "husky install"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*.{js,ts}": [
+      "npx eslint . --fix",
+      "npx prettier --write ."
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Conken-NitKit/commands-for-programming-team.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Conken-NitKit/commands-for-programming-team/issues"
+  },
+  "homepage": "https://github.com/Conken-NitKit/commands-for-programming-team#readme",
+  "devDependencies": {
+    "@types/cheerio": "^0.22.31",
+    "@types/express": "^4.17.13",
+    "@types/inquirer": "^8.2.0",
+    "@types/node": "^17.0.21",
+    "@typescript-eslint/eslint-plugin": "^5.13.0",
+    "@typescript-eslint/parser": "^5.13.0",
+    "eslint": "^7.28.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-import-resolver-typescript": "^2.4.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^11.2.6",
+    "nodemon": "^2.0.15",
+    "prettier": "^2.5.1",
+    "ts-node": "^10.6.0",
+    "typescript": "4.5.5"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.5.10",
+    "axios": "^0.26.0",
+    "chalk": "^4.1.2",
+    "cheerio": "^1.0.0-rc.10",
+    "cross-fetch": "^3.1.5",
+    "dotenv": "^16.0.0",
+    "graphql": "^15.8.0",
+    "inquirer": "^8.2.1",
+    "prompt": "^1.2.2",
+    "querystring": "^0.2.1"
+  }
+}
