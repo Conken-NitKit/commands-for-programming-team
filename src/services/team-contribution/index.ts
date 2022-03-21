@@ -147,7 +147,7 @@ export const teamContributionFunc = async () => {
   const footer =
     '▼　実装内容:\nhttps://github.com/Conken-NitKit/commands-for-programming-team';
 
-  const resultMessage = `${title}\n${firstMessage}\n${message}\n${footer}`;
+  const resultMessage = `\n${title}\n${firstMessage}\n${message}\n${footer}`;
 
   console.log('');
   console.log('結果は以下の通りです。');
