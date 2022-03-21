@@ -145,7 +145,7 @@ export const teamContributionFunc = async () => {
   });
 
   const footer =
-    '▼　実装内容:\nhttps://github.com/Conken-NitKit/conken-contribution';
+    '▼　実装内容:\nhttps://github.com/Conken-NitKit/commands-for-programming-team';
 
   const resultMessage = `${title}\n${firstMessage}\n${message}\n${footer}`;
 
