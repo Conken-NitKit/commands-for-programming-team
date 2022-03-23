@@ -68,23 +68,35 @@ export const teamContributionFunc = async () => {
   ];
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const { periodMessage, maxSize } = await inquirer.prompt([
+  const { periodMessage } = await inquirer.prompt([
     {
       type: 'list',
       name: 'periodMessage',
       message: '探索期間をお選びください。',
-      choices: PeriodMenus.map((menu) => menu.cliMessage),
-    },
-    {
-      type: 'number',
-      name: 'maxSize',
-      message: '表示したい最大メンバーの数を入力してください。',
+      choices: [
+        ...PeriodMenus.map((menu) => menu.cliMessage),
+        '自分で入力する(日)',
+      ],
     },
   ]);
 
-  const watchPeriod = PeriodMenus.find(
-    (menu) => menu.cliMessage === periodMessage,
-  );
+  const watchPeriod =
+    periodMessage === '自分で入力する(日)'
+      ? await (async () => {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          const { periodSize } = await inquirer.prompt([
+            {
+              type: 'number',
+              name: 'periodSize',
+              message: '探索期間(日)を入力してください。',
+            },
+          ]);
+          return {
+            messageTitle: 'ランキング',
+            size: Number(periodSize),
+          };
+        })()
+      : PeriodMenus.find((menu) => menu.cliMessage === periodMessage);
 
   if (!watchPeriod) {
     console.error(
@@ -94,6 +106,15 @@ export const teamContributionFunc = async () => {
     );
     return;
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const { maxSize } = await inquirer.prompt([
+    {
+      type: 'number',
+      name: 'maxSize',
+      message: '表示したい最大メンバーの数を入力してください。',
+    },
+  ]);
 
   const client = new GitHubApiApolloClientImpl(githubAccessToken);
 
