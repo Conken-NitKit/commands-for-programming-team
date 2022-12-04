@@ -3,6 +3,7 @@ import inquirer from 'inquirer';
 
 import { GitHubApiApolloClientImpl } from '../../infrastructures/apollo-github-api';
 import { LineNotifyClientImpl } from '../../infrastructures/line-notify';
+import { SssApiClientImpl } from '../../infrastructures/sssapi';
 import { fetchContributionCount } from '../../scripts/fetchContributionCount';
 
 import { BLACK_LIST_LOGIN_IDS } from './blackList';
@@ -10,6 +11,7 @@ import { BLACK_LIST_LOGIN_IDS } from './blackList';
 export const teamContributionFunc = async () => {
   const githubAccessToken = process.env.GITHUB_ACCESS_TOKEN;
   const organizationId = process.env.ORGANIZATION_ID;
+  const sssApiKey = process.env.SSS_API_KEY;
 
   if (!githubAccessToken) {
     console.error(
@@ -120,6 +122,8 @@ export const teamContributionFunc = async () => {
 
   const memberIds = await client.fetchOrganizationMembers(organizationId);
 
+  const sssApiClient = new SssApiClientImpl();
+
   const requests = memberIds.map(async (id) => {
     const contributionCount = await fetchContributionCount(
       id,
@@ -142,6 +146,14 @@ export const teamContributionFunc = async () => {
 
   const displayMembers = activeMembers.slice(0, Number(maxSize));
 
+  const memberNameMap = sssApiKey
+    ? await sssApiClient.fetchList<{
+        // eslint-disable-next-line camelcase
+        github_id: string;
+        name: string;
+      }>(sssApiKey)
+    : [];
+
   const title = `🎉 ${watchPeriod.messageTitle} 🎉`;
 
   const sumContributions = displayMembers.reduce(
@@ -158,7 +170,13 @@ export const teamContributionFunc = async () => {
     const _idx = idx + 1;
     const percent =
       Math.round((1000 * member.contributionCount) / sumContributions) / 10;
-    message += `${_idx}位: ${member.id}\n`;
+
+    const name =
+      // eslint-disable-next-line camelcase
+      memberNameMap?.find(({ github_id }) => github_id === member.id)?.name ||
+      member.id;
+
+    message += `${_idx}位: ${name}\n`;
     message += `contribution数: ${member.contributionCount} (${percent}%)\n`;
     if (_idx < displayMembers.length) {
       message += `\n`;

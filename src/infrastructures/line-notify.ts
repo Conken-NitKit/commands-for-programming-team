@@ -6,10 +6,12 @@ export abstract class LineNotifyClient {
   abstract notifyMessage(message: string): void;
 }
 
-export class LineNotifyClientImpl {
+export class LineNotifyClientImpl extends LineNotifyClient {
   private serverLink: string;
   private authorization: string;
+
   constructor(_token: string) {
+    super();
     const token = _token;
 
     this.serverLink = 'https://notify-api.line.me/api/notify';
