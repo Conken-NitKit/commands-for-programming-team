@@ -20,7 +20,8 @@ export const fetchContributionCount = async (
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const cheerioRoot = cheerio.load(res.data);
   const contributionCalendarDays = cheerioRoot(
-    'svg.js-calendar-graph-svg rect.ContributionCalendar-day',
+    'rect',
+    '.js-calendar-graph-svg',
   );
 
   let contributionCount = 0;
@@ -31,7 +32,8 @@ export const fetchContributionCount = async (
     const daysAgo =
       differenceDate({ fromDateString: day.attribs['data-date'] }) || 0;
     if (daysAgo < explorationPeriod) {
-      contributionCount += Number(day.attribs['data-count']) || 0;
+      const text = cheerioRoot(day).text() ?? '';
+      contributionCount += Number(text.split(' ')[0]) || 0;
     }
   });
 
